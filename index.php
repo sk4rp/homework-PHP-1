@@ -2,47 +2,47 @@
 
 $example_persons_array = [
     [
-        'fullName' => 'Иванов Иван Иванович',
+        'fullname' => 'Иванов Иван Иванович',
         'job' => 'tester',
     ],
     [
-        'fullName' => 'Степанова Наталья Степановна',
+        'fullname' => 'Степанова Наталья Степановна',
         'job' => 'frontend-developer',
     ],
     [
-        'fullName' => 'Пащенко Владимир Александрович',
+        'fullname' => 'Пащенко Владимир Александрович',
         'job' => 'analyst',
     ],
     [
-        'fullName' => 'Громов Александр Иванович',
+        'fullname' => 'Громов Александр Иванович',
         'job' => 'fullstack-developer',
     ],
     [
-        'fullName' => 'Славин Семён Сергеевич',
+        'fullname' => 'Славин Семён Сергеевич',
         'job' => 'analyst',
     ],
     [
-        'fullName' => 'Цой Владимир Антонович',
+        'fullname' => 'Цой Владимир Антонович',
         'job' => 'frontend-developer',
     ],
     [
-        'fullName' => 'Быстрая Юлия Сергеевна',
+        'fullname' => 'Быстрая Юлия Сергеевна',
         'job' => 'PR-manager',
     ],
     [
-        'fullName' => 'Шматко Антонина Сергеевна',
+        'fullname' => 'Шматко Антонина Сергеевна',
         'job' => 'HR-manager',
     ],
     [
-        'fullName' => 'аль-Хорезми Мухаммад ибн-Муса',
+        'fullname' => 'аль-Хорезми Мухаммад ибн-Муса',
         'job' => 'analyst',
     ],
     [
-        'fullName' => 'Бардо Жаклин Фёдоровна',
+        'fullname' => 'Бардо Жаклин Фёдоровна',
         'job' => 'android-developer',
     ],
     [
-        'fullName' => 'Шварцнегер Арнольд Густавович',
+        'fullname' => 'Шварцнегер Арнольд Густавович',
         'job' => 'babysitter',
     ],
 ];
@@ -140,7 +140,7 @@ function determineGender($fullName): int
 echo "\n";
 
 foreach ($example_persons_array as $person) {
-    $fullName = $person['fullName'];
+    $fullName = $person['fullname'];
     $shortName = getShortName($fullName);
     $gender = determineGender($fullName);
 
@@ -161,7 +161,7 @@ function getGenderDescription($example_persons_array): string
     $unknownCount = 0;
 
     foreach ($example_persons_array as $person) {
-        $gender = determineGender($person['fullName']);
+        $gender = determineGender($person['fullname']);
         switch ($gender) {
             case 1:
                 $maleCount++;
@@ -201,7 +201,7 @@ function getPerfectPartner($surname, $name, $patronymic, $personsArray): string
     $gender = determineGender($fio);
 
     $potentialPartners = array_filter($personsArray, static function ($person) use ($gender) {
-        $partnerGender = determineGender($person['fullName']);
+        $partnerGender = determineGender($person['fullname']);
         return ($gender === 1 && $partnerGender === -1) || ($gender === -1 && $partnerGender === 1);
     });
 
@@ -212,7 +212,7 @@ function getPerfectPartner($surname, $name, $patronymic, $personsArray): string
     $randomIndex = array_rand($potentialPartners);
     $partner = $potentialPartners[$randomIndex];
 
-    $partnerFio = $partner['fullName'];
+    $partnerFio = $partner['fullname'];
     $compatibilityPercentage = random_int(5000, 10000) / 100;
     $message = getShortName($fio) . ' + ' . getShortName($partnerFio) . ' = ' . "\n";
     $message .= '♡ Идеально на ' . number_format($compatibilityPercentage, 2) . '% ♡';

@@ -102,7 +102,6 @@ echo "\n";
 function getGenderFromName($fullName): int
 {
     $parts = getPartsFromFullName($fullName);
-
     $genderSum = 0;
 
     $surname = mb_strtolower($parts['surname']);
@@ -134,7 +133,7 @@ function getGenderFromName($fullName): int
         return -1; // Женщина
     }
 
-    return 0; // Undefined / Неизвестно
+    return 0; // Неопределенный пол
 }
 
 echo "\n";
@@ -144,12 +143,9 @@ foreach ($example_persons_array as $person) {
     $shortName = getShortName($fullName);
     $gender = getGenderFromName($fullName);
 
-    echo match ($gender) {
-        1 => "$shortName - это мужчина\n",
-        -1 => "$shortName - это женщина\n",
-        0 => "$shortName - неизвестно\n",
-        default => "Невозможно определить пол человека: $shortName.\n",
-    };
+    echo "Краткое ФИО: $shortName\n";
+    echo "ФИО full: $fullName\n";
+    echo "Gender: $gender\n\n";
 }
 
 // Определение возрастно-полового состава

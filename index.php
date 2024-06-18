@@ -99,7 +99,7 @@ echo $shortName;
 echo "\n";
 
 // Функция определения пола по ФИО
-function determineGender($fullName): int
+function getGenderFromName($fullName): int
 {
     $parts = getPartsFromFullName($fullName);
 
@@ -142,7 +142,7 @@ echo "\n";
 foreach ($example_persons_array as $person) {
     $fullName = $person['fullname'];
     $shortName = getShortName($fullName);
-    $gender = determineGender($fullName);
+    $gender = getGenderFromName($fullName);
 
     echo match ($gender) {
         1 => "$shortName - это мужчина\n",
@@ -161,7 +161,7 @@ function getGenderDescription($example_persons_array): string
     $unknownCount = 0;
 
     foreach ($example_persons_array as $person) {
-        $gender = determineGender($person['fullname']);
+        $gender = getGenderFromName($person['fullname']);
         switch ($gender) {
             case 1:
                 $maleCount++;
@@ -198,10 +198,10 @@ echo "\n";
 function getPerfectPartner($surname, $name, $patronymic, $personsArray): string
 {
     $fio = getFullNameFromParts($surname, $name, $patronymic);
-    $gender = determineGender($fio);
+    $gender = getGenderFromName($fio);
 
     $potentialPartners = array_filter($personsArray, static function ($person) use ($gender) {
-        $partnerGender = determineGender($person['fullname']);
+        $partnerGender = getGenderFromName($person['fullname']);
         return ($gender === 1 && $partnerGender === -1) || ($gender === -1 && $partnerGender === 1);
     });
 

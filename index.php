@@ -202,7 +202,7 @@ function getPerfectPartner($surname, $name, $patronymic, $personsArray): string
     });
 
     if (empty($potentialPartners)) {
-        throw new \RuntimeException("Не найдено подходящего партнера");
+        echo "Не удалось определить пару для $fio";
     }
 
     $randomIndex = array_rand($potentialPartners);

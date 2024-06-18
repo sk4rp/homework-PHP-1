@@ -1,7 +1,5 @@
 <?php
 
-use Random\RandomException;
-
 $example_persons_array = [
     [
         'fullName' => 'Иванов Иван Иванович',
@@ -197,9 +195,6 @@ echo getGenderDescription($example_persons_array);
 echo "\n";
 
 // Идеальный подбор пары
-/**
- * @throws RandomException
- */
 function getPerfectPartner($surname, $name, $patronymic, $personsArray): string
 {
     $fio = getFullNameFromParts($surname, $name, $patronymic);
@@ -211,7 +206,7 @@ function getPerfectPartner($surname, $name, $patronymic, $personsArray): string
     });
 
     if (empty($potentialPartners)) {
-        throw new RandomException("Не найдено подходящего партнера");
+        throw new \RuntimeException("Не найдено подходящего партнера");
     }
 
     $randomIndex = array_rand($potentialPartners);
@@ -227,7 +222,7 @@ function getPerfectPartner($surname, $name, $patronymic, $personsArray): string
 
 try {
     echo getPerfectPartner('Иванов', 'Иван', 'Иванович', $example_persons_array);
-} catch (RandomException $e) {
+} catch (Exception $e) {
     echo $e->getMessage();
 }
 

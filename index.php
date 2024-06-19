@@ -104,24 +104,27 @@ function getGenderFromName($fullName): int
     $parts = getPartsFromFullName($fullName);
     $genderSum = 0;
 
+    // Проверка фамилии
     $surname = mb_strtolower($parts['surname']);
-    if (mb_substr($surname, -2) === 'ва') {
+    if (mb_substr($surname, -2) === 'ва' || mb_substr($surname, -2) === 'до') {
         --$genderSum; // Женщина
-    } elseif (mb_substr($surname, -1) === 'в') {
+    } elseif (mb_substr($surname, -1) === 'в' || mb_substr($surname, -1) === 'ми') {
         ++$genderSum; // Мужчина
     }
 
+    // Проверка имени
     $name = mb_strtolower($parts['name']);
-    if (mb_substr($name, -1) === 'а') {
+    if (mb_substr($name, -1) === 'а' || mb_substr($name, -1) === 'ин') {
         --$genderSum; // Женщина
-    } elseif (in_array(mb_substr($name, -1), ['й', 'н'])) {
+    } elseif (in_array(mb_substr($name, -1), ['й', 'н', 'д'])) {
         ++$genderSum; // Мужчина
     }
 
+    // Проверка отчества
     $patronymic = mb_strtolower($parts['patronymic']);
     if (mb_substr($patronymic, -3) === 'вна') {
         --$genderSum; // Женщина
-    } elseif (mb_substr($patronymic, -3) === 'ич') {
+    } elseif (mb_substr($patronymic, -2) === 'ич' || mb_substr($patronymic, -2) === 'са') {
         ++$genderSum; // Мужчина
     }
 

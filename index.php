@@ -196,33 +196,43 @@ echo "\n";
 // Идеальный подбор пары
 function getPerfectPartner($surname, $name, $patronymic, $personsArray): string
 {
-    $fio = getFullNameFromParts($surname, $name, $patronymic);
-    $gender = getGenderFromName($fio);
+    // Приведение к привычному регистру
+    $surname = mb_convert_case($surname, MB_CASE_TITLE, "UTF-8");
+    $name = mb_convert_case($name, MB_CASE_TITLE, "UTF-8");
+    $patronymic = mb_convert_case($patronymic, MB_CASE_TITLE, "UTF-8");
 
-    $potentialPartners = array_filter($personsArray, static function ($person) use ($gender) {
-        $partnerGender = getGenderFromName($person['fullname']);
-        return ($gender === 1 && $partnerGender === -1) || ($gender === -1 && $partnerGender === 1);
-    });
+    // Склеивание ФИО
+    $fullName = getFullNameFromParts($surname, $name, $patronymic);
 
-    if (empty($potentialPartners)) {
-        echo "Не удалось определить пару для $fio";
+    // Определение пола
+    $gender = getGenderFromName($fullName);
+
+    // Защита от неопределенного пола
+    if ($gender === 0) {
+        return "Не удалось определить пол для $fullName";
     }
 
-    $randomIndex = array_rand($potentialPartners);
-    $partner = $potentialPartners[$randomIndex];
+    // Поиск идеальной пары
+    do {
+        $randomIndex = array_rand($personsArray);
+        $potentialPartner = $personsArray[$randomIndex];
+        $partnerGender = getGenderFromName($potentialPartner['fullname']);
+    } while ($partnerGender === 0 || $partnerGender === $gender);
 
-    $partnerFio = $partner['fullname'];
+    // Формирование результата
+    $partnerFullName = $potentialPartner['fullname'];
     $compatibilityPercentage = random_int(5000, 10000) / 100;
-    $message = getShortName($fio) . ' + ' . getShortName($partnerFio) . ' = ' . "\n";
+    $message = getShortName($fullName) . ' + ' . getShortName($partnerFullName) . ' = ' . "\n";
     $message .= '♡ Идеально на ' . number_format($compatibilityPercentage, 2) . '% ♡';
 
     return $message;
 }
 
 try {
-    echo getPerfectPartner('Иванов', 'Иван', 'Иванович', $example_persons_array);
+    echo getPerfectPartner('Шварцнегер', 'Арнольд', 'Густавович', $example_persons_array);
 } catch (Exception $e) {
     echo $e->getMessage();
 }
+
 
 
